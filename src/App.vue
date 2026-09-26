@@ -10,8 +10,12 @@ const player1Played = ref(false);
 const gameOver = ref(false);
 const finalResult = ref('');
 
+const initBoard = () => {
+   return Array.from({ length: MAX_BOXES }, (_, index) => "")
+};
+
 const board = ref(
-    Array.from({ length: MAX_BOXES }, (_, index) => "")
+    initBoard()
 );
 
 const winningPatterns = [
@@ -76,7 +80,14 @@ function handleClick(currentIndex) {
     }
 
     player1Played.value = !player1Played.value;
-}
+};
+
+const restart = () => {
+    board.value = initBoard();
+    gameOver.value = false;
+    finalResult.value = '';
+    player1Played.value = false;
+};
 </script>
 
 <template>
@@ -96,6 +107,10 @@ function handleClick(currentIndex) {
         </div>
 
         <div v-if="gameOver">{{ finalResult }}</div>
+
+        <div>
+            <button @click="restart()" type="button">Restart</button>
+        </div>
     </div>
 </template>
 
