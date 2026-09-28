@@ -18,6 +18,10 @@ const board = ref(
     initBoard()
 );
 
+const isDraw = computed(() => {
+    return board.value.every((box) => ['O', 'X'].includes(box) );
+});
+
 const winningPatterns = [
     // Rows
     [0, 1, 2],
@@ -35,8 +39,7 @@ const winningPatterns = [
 ];
 
 const winner = (player) => {
-    if(patternMatched())
-        return player;
+    return patternMatched() ? player : null;
 };
 
 const patternMatched = () => {    
@@ -65,18 +68,25 @@ function handleClick(currentIndex) {
     const player = currentPlayer.value;
 
     board.value[currentIndex] = player.value;
+
     const res = winner(player.value);
     if(gameOver.value){
         switch(res){
             case "X":
-                finalResult.value = 'Player 1 Won!';
+                finalResult.value = 'X Won!';
                 break;
             case "O":
-                finalResult.value = 'Player 2 Won!';
+                finalResult.value = 'O Won!';
                 break;
             default:
                 finalResult.value = 'Draw';
         }
+    }
+
+    if(isDraw.value){
+        gameOver.value = true;
+        finalResult.value = "Draw";
+        return;
     }
 
     player1Played.value = !player1Played.value;
@@ -92,24 +102,29 @@ const restart = () => {
 
 <template>
     <div
-        class="w-screen h-screen flex flex-col items-center justify-center bg-[var(--bg)] text-[var(--text)]"
+        class="w-screen h-screen flex flex-col items-center justify-center space-y-4"
     >
+        <h3 v-if="!gameOver" class="text-lg font-bold">
+            <span :class="{ 'text-[var(--x)]': currentPlayer === 'X', 'text-[var(--o)]': currentPlayer === 'O' }">{{ currentPlayer }}</span><span>'s Turn</span>
+        </h3>
         <div class="grid grid-cols-3 grid-rows-3">
             <button
                 v-for="(box, index) in board"
                 :disabled="gameOver || box !== ''"
                 :key="index"
                 @click="handleClick(index)"
-                class="w-[50px] h-[50px] font-semibold border border-[var(--border)] bg-[var(--cell)] text-[var(--text)] cursor-pointer"
+                class="w-[100px] h-[100px] font-semibold border border-[var(--border)] hover:border-[var(--border-hover)] bg-[var(--cell)] cursor-pointer text-xl"
+                :class="{ 'text-[var(--x)] shadow-[0_0_8px_var(--x-glow)]': box === 'X',
+                        'text-[var(--o)] shadow-[0_0_8px_var(--o-glow)]': box === 'O' }"
             >
                 {{ box }}
             </button>
         </div>
 
-        <div v-if="gameOver">{{ finalResult }}</div>
+        <div v-if="gameOver" :class="{ 'text-[var(--warning)]': isDraw, 'text-[var(--success)]': !isDraw }">{{ finalResult }}</div>
 
         <div>
-            <button @click="restart()" type="button">Restart</button>
+            <button class="btn-primary" @click="restart()" type="button">Restart</button>
         </div>
     </div>
 </template>

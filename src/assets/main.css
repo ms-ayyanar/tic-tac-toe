@@ -1,21 +1,83 @@
 @import "tailwindcss";
 
 :root {
+    /* Background */
     --bg: #0f172a;
-    --card: #1e293b;
-    --cell: #111827;
-    --border: #334155;
-    --text: #f8fafc;
-    --muted: #94a3b8;
-    --accent: #38bdf8;
-}
+    --bg-soft: #111827;
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    /* Card / Surface */
+    --card: #1e293b;
+    --card-hover: #263449;
+
+    /* Board */
+    --cell: #111827;
+    --cell-hover: #1e293b;
+    --border: #334155;
+    --border-hover: #475569;
+
+    /* Text */
+    --text: #f8fafc;
+    --text-soft: #e2e8f0;
+    --muted: #94a3b8;
+
+    /* Primary */
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --accent-soft: #082f49;
+
+    /* Player X */
+    --x: #38bdf8;
+    --x-glow: rgba(56, 189, 248, 0.25);
+
+    /* Player O */
+    --o: #a78bfa;
+    --o-glow: rgba(167, 139, 250, 0.25);
+
+    /* Success */
+    --success: #22c55e;
+    --success-soft: #052e16;
+
+    /* Danger */
+    --danger: #ef4444;
+    --danger-soft: #450a0a;
+
+    /* Warning */
+    --warning: #f59e0b;
+    --warning-soft: #451a03;
+
+    /* Button */
+    --button: #0ea5e9;
+    --button-hover: #0284c7;
+    --button-text: #ffffff;
+
+    /* Disabled */
+    --disabled: #475569;
+    --disabled-text: #64748b;
+
+    /* Shadow */
+    --shadow: rgba(0, 0, 0, 0.35);
 }
 
 body {
+    background-color: var(--bg-soft);
+    color: var(--text);
     font-family: sans-serif;
+}
+
+.btn-primary{
+    background-color: var(--button);
+    color: var(--button-text);
+    cursor: pointer;
+
+    font-weight: 500;
+    width: auto;
+    height: auto;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-primary:hover{
+    background-color: var(--button-hover);
+
+    transition: background-color 0.5s ease;
 }
